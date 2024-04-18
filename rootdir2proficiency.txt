@@ -1,0 +1,78 @@
+georgiatech_cooking_01_01_4 Novice
+georgiatech_cooking_01_03_4 Novice
+iiith_cooking_01_1 Early Expert
+iiith_cooking_02_1 Novice
+iiith_cooking_02_3 Novice
+iiith_cooking_03_1 Early Expert
+iiith_cooking_03_3 Intermediate Expert
+iiith_cooking_04_1 Early Expert
+iiith_cooking_05_1 Intermediate Expert
+iiith_cooking_05_3 Early Expert
+iiith_cooking_05_5 Early Expert
+iiith_cooking_06_1 Early Expert
+iiith_cooking_07_1 Early Expert
+iiith_cooking_08_1 Early Expert
+iiith_cooking_11_1 Early Expert
+iiith_cooking_12_1 Early Expert
+iiith_cooking_13_1 Novice
+iiith_cooking_14_1 Early Expert
+iiith_cooking_16_1 Novice
+iiith_cooking_17_1 Early Expert
+iiith_cooking_18_1 Intermediate Expert
+iiith_cooking_19_1 Novice
+iiith_cooking_20_1 Novice
+iiith_cooking_23_1 Novice
+iiith_cooking_24_1 Early Expert
+iiith_cooking_25_1 Intermediate Expert
+iiith_cooking_25_3 Intermediate Expert
+iiith_cooking_26_1 Early Expert
+iiith_cooking_28_1 Early Expert
+iiith_cooking_40_1 Intermediate Expert
+iiith_cooking_41_1 Intermediate Expert
+iiith_cooking_41_3 Intermediate Expert
+iiith_cooking_43_1 Intermediate Expert
+iiith_cooking_43_3 Intermediate Expert
+iiith_cooking_44_1 Intermediate Expert
+iiith_cooking_45_1 Intermediate Expert
+iiith_cooking_45_3 Intermediate Expert
+iiith_cooking_56_2 Early Expert
+iiith_cooking_57_2 Intermediate Expert
+iiith_cooking_57_4 Early Expert
+iiith_cooking_75_2 Novice
+iiith_cooking_77_2 Early Expert
+iiith_cooking_79_2 Early Expert
+sfu_cooking_002_1 Novice
+sfu_cooking_002_3 Novice
+sfu_cooking_002_5 Novice
+sfu_cooking_002_7 Novice
+sfu_cooking_003_1 Early Expert
+sfu_cooking_003_3 Early Expert
+sfu_cooking_003_5 Early Expert
+sfu_cooking_006_1 Intermediate Expert
+sfu_cooking_009_1 Early Expert
+sfu_cooking_009_3 Early Expert
+sfu_cooking_009_5 Early Expert
+sfu_cooking_009_7 Early Expert
+sfu_cooking_013_1 Novice
+sfu_cooking_013_3 Novice
+uniandes_cooking_008_6 Novice
+upenn_0628_Cooking_1_2 Early Expert
+upenn_0702_Cooking_2_2 Novice
+upenn_0702_Cooking_2_3 Novice
+upenn_0702_Cooking_3_2 Novice
+upenn_0702_Cooking_3_3 Novice
+upenn_0702_Cooking_4_2 Novice
+upenn_0702_Cooking_4_3 Novice
+upenn_0702_Cooking_5_2 Novice
+upenn_0702_Cooking_5_3 Novice
+upenn_0710_Cooking_1_2 Novice
+upenn_0710_Cooking_1_3 Novice
+upenn_0710_Cooking_2_2 Novice
+upenn_0710_Cooking_2_3 Novice
+upenn_0712_Cooking_1_2 Intermediate Expert
+upenn_0712_Cooking_1_3 Intermediate Expert
+upenn_0712_Cooking_1_4 Intermediate Expert
+upenn_0712_Cooking_1_5 Intermediate Expert
+upenn_0714_Cooking_2_3 Novice
+upenn_0714_Cooking_3_2 Novice
+upenn_0714_Cooking_3_3 Novice
