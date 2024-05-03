@@ -1,6 +1,3 @@
-#! /usr/bin/python3
-# Author : Kevin Feghoul
-
 import numpy as np
 import pandas as pd
 from math import sqrt

@@ -1,6 +1,3 @@
-#! /usr/bin/python3
-# Author : Kevin Feghoul
-
 import argparse
 import numpy as np
 import cv2
@@ -30,11 +27,7 @@ def body_landmarks_extraction(subject_id, frames_dir, filenames:List[str], saved
 
         all_frame_landmarks = {}
 
-        #filenames = filenames[:50]
-
         for frame_id, file in tqdm(enumerate(filenames), total=len(filenames)):
-
-            #print(frame_id+1, int(re.findall('[0-9]+', file)[0]))
 
             assert frame_id+1 == int(re.findall('[0-9]+', file)[0])
 
@@ -56,17 +49,6 @@ def body_landmarks_extraction(subject_id, frames_dir, filenames:List[str], saved
 
             all_frame_landmarks[frame_id+1] = np.array(coordinates_landmarks)
 
-            #print(frame_id, np.array(coordinates_landmarks).shape)
-
-            #BG_COLOR = (192, 192, 192)
-            #annotated_image = image.copy()
-            #condition = np.stack((results.segmentation_mask,) * 3, axis=-1) > 0.1
-            #bg_image = np.zeros(image.shape, dtype=np.uint8)
-            #bg_image[:] = BG_COLOR
-            #annotated_image = np.where(condition, annotated_image, bg_image)
-
-            # Draw pose landmarks on the image.
-
             mp_drawing.draw_landmarks(
                 annotated_image,
                 results.pose_landmarks,
@@ -86,11 +68,7 @@ def sort_frame_id(path):
     part3 = sorted([frame for frame in all_frames_unsorted if len(frame) == 13])
     part4 = sorted([frame for frame in all_frames_unsorted if len(frame) == 14])
     part5 = sorted([frame for frame in all_frames_unsorted if len(frame) == 15])
-    # print(f"Part1: {part1}")
-    # print(f"Part2: {part2}")
-    # print(f"Part3: {part3}")
-    # print(f"Part4: {part4}")
-    # print(f"Part5: {part5}")
+
     all_frames = part1 + part2 + part3 + part4 + part5
     return all_frames
 
