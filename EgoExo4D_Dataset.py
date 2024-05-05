@@ -45,6 +45,7 @@ class EgoExo4d():
         for k, v in self.egoexo.items():
             self.egoexo[k] = json.load(open(v))
         keysteps = {**self.egoexo['keystep_train']['annotations'], **self.egoexo['keystep_val']['annotations']}
+        
         self.video_uids = []
         self.video_names = self.get_video_names_from_txt(video_subsets_file_path)
 
@@ -54,10 +55,9 @@ class EgoExo4d():
          
         self.id2proficiency = self.get_id2proficiency(self.video_uids) #84
         self.id2rootdir = self.get_id2rootdir(self.video_uids) #84
-        self.rootdir2proficiency = self.get_rootdir2proficiency(self.id2rootdir, self.id2proficiency) #84
-        
+        self.rootdir2proficiency = self.get_rootdir2proficiency(self.id2rootdir, self.id2proficiency) #84  
         self.label_idx = self.create_label_dict(self.video_uids, keysteps) # 37 verbs
-        self.subject_id_to_time =self.create_subject_id_to_time(keysteps)
+        self.rootdir2time =self.create_rootdir2time(keysteps)
          
     def get_video_names_from_txt(self,filepath):
         with open(filepath, 'r') as f:
@@ -112,7 +112,7 @@ class EgoExo4d():
         
         return rootdir2proficiency
 
-    def create_subject_id_to_time(self, annotations):
+    def create_rootdir2time(self, annotations):
         sitt = {}
         for video_id, rootdir in self.id2rootdir.items():
             sitt[rootdir]={}
@@ -130,13 +130,10 @@ class EgoExo4d():
     def write_rootdir2proficiency(self, dict1, dict2):
         
         filename= f"rootdir2proficiency.txt"
-        filepath= os.path.join("/home/smart/Downloads/src",filename)
         dict1 = dict(sorted(dict1.items(), key=lambda item: item[1]))
         ids = dict1.keys()
-        with open(filepath, 'w') as f:
-            
+        with open(filename, 'w') as f:
             for id in ids:
-                # print(dict1[id])
                 f.write(dict1[id]+" " + dict2[id]+'\n')
         f.close()
                        

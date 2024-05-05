@@ -1,6 +1,3 @@
-#! /usr/bin/python3
-# Author : Kevin Feghoul
-
 import itertools
 import numpy as np
 import random
@@ -78,18 +75,6 @@ def concat(L: List[Any]) -> List[Any]:
     return out
 
 
-def surgeon_partition(surgeons_id: List[str]) -> List[Tuple[List[str], List[str]]]:
-    out = []
-    for subset in itertools.combinations(surgeons_id, 2):
-        test_id = list(subset)
-        train_id = deepcopy(surgeons_id)
-        for id in subset:
-            train_id.remove(id)
-        out.append((train_id, test_id))
-    # print(f"SUrgeons: {out}")
-    return out
-
-
 def level_partition(subjects: List[str], n: int, seed: int = 7777) -> List[Tuple[List[str], List[str]]]:
     if len(subjects)<=20:
         subjects += subjects
@@ -109,11 +94,10 @@ def level_partition(subjects: List[str], n: int, seed: int = 7777) -> List[Tuple
         tmp.pop(idx)
         combinations.append((concat(tmp), concat([group_subjects])))
  
-    # print(f"Combinations: {combinations}")
     return combinations
 
 
-def surgeon_interns_partition(
+def full_partition(
     Novice_groups: List[Tuple[List[str], List[str]]], 
     EarlyExpert_groups: List[Tuple[List[str], List[str]]],
     IntermediateExpert_groups: List[Tuple[List[str], List[str]]]
@@ -127,17 +111,3 @@ def surgeon_interns_partition(
         
         out.append((train_id_n + train_id_ee + train_id_ie, test_id_n + test_id_ee +test_id_ie))
     return out
-
-## ORIGINAL function
-# def surgeon_interns_partition(
-#     surgeons_groups: List[Tuple[List[str], List[str]]], 
-#     interns_groups: List[Tuple[List[str], List[str]]]
-#     ) -> List[Tuple[List[str], List[str]]]:
-
-#     out = []
-#     for surgeons_group, interns_group in zip(surgeons_groups, interns_groups):
-#         train_id_s, test_id_s = surgeons_group
-#         train_id_i, test_id_i = interns_group
-#         out.append((train_id_s + train_id_i, test_id_s + test_id_i))
-#     return out
-

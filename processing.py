@@ -7,58 +7,8 @@ import re
 from tqdm import tqdm
 import pickle as pkl
 from typing import *
-
 import mediapipe as mp
-
 from utils import *
-
-
-def body_landmarks_extraction(subject_id, frames_dir, filenames:List[str], saved_img:str, saved_body_landmarks:str):
-    
-    mp_drawing = mp.solutions.drawing_utils
-    mp_drawing_styles = mp.solutions.drawing_styles
-    mp_pose = mp.solutions.pose
-
-    with mp_pose.Pose(
-        static_image_mode=False,
-        model_complexity=2,
-        enable_segmentation=True,
-        min_detection_confidence=0.5) as pose:
-
-        all_frame_landmarks = {}
-
-        for frame_id, file in tqdm(enumerate(filenames), total=len(filenames)):
-
-            assert frame_id+1 == int(re.findall('[0-9]+', file)[0])
-
-            all_frame_landmarks[frame_id+1] = {}
-
-            image = cv2.imread(os.path.join(frames_dir, file))
-
-            results = pose.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-
-            coordinates_landmarks = []
-
-            annotated_image = image.copy()
-
-            for body_landmarks in results.pose_landmarks.landmark:
-
-                coordinates_landmarks.append(body_landmarks.x)
-                coordinates_landmarks.append(body_landmarks.y)
-                coordinates_landmarks.append(body_landmarks.z)
-
-            all_frame_landmarks[frame_id+1] = np.array(coordinates_landmarks)
-
-            mp_drawing.draw_landmarks(
-                annotated_image,
-                results.pose_landmarks,
-                mp_pose.POSE_CONNECTIONS,
-                landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
-            
-            cv2.imwrite(os.path.join(saved_img, 'frame_' + str(frame_id) + '.jpg'), annotated_image)
-        
-    save_pickle(os.path.join(saved_body_landmarks, subject_id +'_data.pkl'), all_frame_landmarks)
-
 
 
 def sort_frame_id(path):
@@ -123,30 +73,16 @@ def hand_landmarks_detection(subject_id, frames_dir, filenames:List[str], saved_
 
         all_frame_landmarks = {}
 
-        #filenames = filenames[:50]
-
         for frame_id, file in tqdm(enumerate(filenames), total=len(filenames)):
-
-            #print(frame_id+1, int(re.findall('[0-9]+', file)[0]))
-
             assert frame_id+1 == int(re.findall('[0-9]+', file)[0])
 
             all_frame_landmarks[frame_id+1] = {}
 
             image = cv2.imread(os.path.join(frames_dir, file))
-            #print(image.shape)
-
-            # Convert the BGR image to RGB before processing.
             results = hands.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-
-            #print(results.multi_handedness)
-            #nb_hands = len(results.multi_handedness)
-
             if not results.multi_hand_landmarks:
                 continue
 
-            #image_height, image_width, _ = image.shape
-            
             annotated_image = image.copy()
             
             for idx, (hand_landmarks, handedness) in enumerate(zip(results.multi_hand_landmarks, results.multi_handedness)):
@@ -210,7 +146,6 @@ def main():
 
         # hands landmarks extraction
         if args.hands_landmarks_extraction:
-            #frames_dir = os.listdir(os.path.join('../data/frames', os.path.join(subject_type, subject_id)))
             hands_landmarks_dir = os.path.join('data/hands_landmarks_frames', subject_id)
             save_hands_landmarks = 'data/hands_landmarks'
             make_dirs(hands_landmarks_dir)
@@ -223,7 +158,6 @@ def main():
 
             # saved_path = os.path.join("data/hands_landmarks_frames/videos", subject_id)
             # make_dirs(saved_path)
-
             # video_generation(hands_landmarks_dir, "data/hands_landmarks_frames/videos", subject_id + '.avi')
 
             shutil.rmtree(save_dir)
@@ -235,27 +169,6 @@ def main():
     print("All video features extracted!")
     print(f"There are {len(os.listdir('data/hands_landmarks'))} features in data/hands_landmarks")
 
-'''
-        if body_landmarks_extraction:
-
-            #frames_dir = os.listdir(os.path.join('../data/frames', os.path.join(subject_type, subject_id)))
-            body_landmarks_dir = os.path.join('../data/body_landmarks_frames', subject_id)
-            saved_body_landmarks = '../data/body_landmarks'
-            saved_img = os.path.join('../data/body_landmarks_frames', subject_id)
-            make_dirs(body_landmarks_dir)
-
-            body_landmarks_extraction(subject_id, save_dir, sort_frame_id(save_dir), saved_img, saved_body_landmarks)
-
-            saved_path = os.path.join("../data/body_landmarks_frames/videos", subject_id)
-            make_dirs(saved_path)
-
-            video_generation(saved_img, saved_path, subject_id + '.avi')
-
-            #shutil.rmtree(save_dir)
-            #print("Deleted '%s' directory successfully" % save_dir)
-            '''
-
-
 
 
 if __name__ == '__main__':
@@ -264,11 +177,5 @@ if __name__ == '__main__':
 
     parser.add_argument('--frame_extraction', default=True, action=argparse.BooleanOptionalAction)
     parser.add_argument('--hands_landmarks_extraction', default=True, action=argparse.BooleanOptionalAction)
-    parser.add_argument('--body_landmarks_extraction', default=False, action=argparse.BooleanOptionalAction)
-   
 
     main()
-    # hands_landmarks_dir = os.path.join('data/hands_landmarks_frames/upenn_0714_Cooking_3_2')
-    # save_hands_landmarks = 'data/hands_landmarks'
-    # make_dirs(hands_landmarks_dir)
-    # hand_landmarks_detection("upenn_0714_Cooking_3_2",'data/frames/upenn_0714_Cooking_3_2', sort_frame_id('data/frames/upenn_0714_Cooking_3_2'), hands_landmarks_dir, save_hands_landmarks)

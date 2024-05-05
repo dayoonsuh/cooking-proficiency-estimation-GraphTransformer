@@ -10,7 +10,6 @@ from itertools import combinations
 from tqdm import tqdm
 from typing import *
 import random
-# from ..utils import *
 from EgoExo4D_Dataset import EgoExo4d
 import pickle as pkl
 warnings.filterwarnings('ignore')
@@ -43,16 +42,14 @@ def save_pickle(filename: str, data: dict) -> None:
         
 
 ## !!!!!!!!!!Group by Actions!!!!!!!!!!!!!!!!!
-from EgoExo4D_Dataset import EgoExo4d
 class Preprocessing:
 
     def __init__(self, data_dir:str, normalization:bool=True):
         self.data_dir = data_dir #data/hands_landmarks 
         self.normalization = normalization
         self.egoexo4d = EgoExo4d()
-        self.subject_id_to_time = self.egoexo4d.subject_id_to_time
+        self.rootdir2time = self.egoexo4d.rootdir2time
         
-
     def get_filenames(self):
         return sorted([file for file in os.listdir(self.data_dir)])
     
@@ -113,15 +110,6 @@ class Preprocessing:
         if self.normalization:
             for action in landmarks_all_actions.keys():
                 landmarks_all_actions[action] = self.normalization_hand_landmarks(landmarks_all_actions[action])
-           
-        # for key, value in landmarks_all_actions.items():
-        #     emptylist = []
-        #     if len(value) == 0:             
-        #         emptylist.append(key)
-        #         print(key)
-        #     for key in emptylist:
-        #         # print(key)
-        #         del landmarks_all_actions[key]
 
         return landmarks_all_actions
 
@@ -138,19 +126,13 @@ class Preprocessing:
             landmarks = self.get_hand_landmarks(data)
             print(subject_id)
             
-            all_actions = self.get_right_hand_landmarks_by_ex(landmarks, self.subject_id_to_time[subject_id],30)
+            all_actions = self.get_right_hand_landmarks_by_ex(landmarks, self.rootdir2time[subject_id],30)
             all_subject_data[subject_id]=all_actions
-            # landmarks_ex1, landmarks_ex2, landmarks_ex3 = self.get_right_hand_landmarks_by_ex(landmarks, subject_id_to_time[subject_id],30)
-            
+
             landmarks_all = self.get_right_hand_landmarks(landmarks)
             all_subject_data[subject_id]['all'] = landmarks_all
-            # all_exercises = {'ex1': landmarks_ex1, 'ex2': landmarks_ex2, 'ex3': landmarks_ex3, 'all': landmarks_all}
-            # all_subject_data[subject_id] = all_exercises
-       
-        # self.subject_cleaning(all_subject_data)
 
         return all_subject_data
-    
     
 if __name__ == "__main__":
     data_dir = "data/hands_landmarks"

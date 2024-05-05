@@ -1,6 +1,3 @@
-#! /usr/bin/python3
-# Author : Kevin Feghoul
-
 import argparse
 import numpy as np
 import os
@@ -25,7 +22,6 @@ from sklearn.model_selection import LeaveOneOut
 from sklearn.model_selection import KFold
 from EgoExo4D_Dataset import EgoExo4d
 warnings.filterwarnings("ignore")
-
 
 
 
@@ -75,36 +71,22 @@ def main():
     Novice_id = [s_id for s_id in subject_id if rootdir2proficiency[s_id].startswith("Novice")] # 24
     EarlyExpert_id = [s_id for s_id in subject_id if rootdir2proficiency[s_id].startswith('Early')] #24
     IntermediateExpert_id = [s_id for s_id in subject_id if rootdir2proficiency[s_id].startswith('Intermediate')] #18
-    #----------------------------------------------------------------------------------------------
-    #----------------------------------------------------------------------
 
     Novice_split = level_partition(Novice_id,8) # train:32, test:8
     EarlyExpert_split = level_partition(EarlyExpert_id,8) # train:32, test:8
     IntermediateExpert_split = level_partition(IntermediateExpert_id,8) # train:32, test:8
-    full_partition = surgeon_interns_partition(Novice_split,EarlyExpert_split,IntermediateExpert_split)
-
-    # print(len(Novice_split),len(EarlyExpert_split),len(IntermediateExpert_split))# 5 5 5 - for action grouped
+    full_partition = full_partition(Novice_split,EarlyExpert_split,IntermediateExpert_split)
        
     all_acc, all_f1, all_prec, all_rec, all_cm = [], [], [], [], []
     
-    # for idx, (train_subjects, test_subjects) in enumerate(kf.split(subject_id)):
-
     for idx, (train_subjects, test_subjects) in enumerate(full_partition):
-        # train_subjects = [subject_id[i] for i in train_subjects]
-        # test_subjects= [subject_id[i] for i in test_subjects]
         print()
-        # print(f"{len(train_subjects)} Train subject: {train_subjects}")
-        # # print()
-        # print(f"{len(test_subjects)} Test subject: {test_subjects}")
-
         print("\n#-------------------------- Fold {} --------------------------#\n".format(idx+1))
 
         # create_dataset
         trainX, trainY = create_dataset(data, args.ex_id, train_subjects, args.window_size, args.overlap)
-
         testX, testY = create_dataset(data, args.ex_id, test_subjects, args.window_size, args.overlap)
         print("trainX shape : {}, trainY shape : {}, testX shape : {}, testY shape : {}".format(trainX.shape, trainY.shape, testX.shape, testY.shape))
-        
         print("\nDistribution labels: ")
         print(torch.bincount(trainY))
         print(torch.bincount(testY))
@@ -168,7 +150,6 @@ def main():
         print(labels)
         print(preds)
 
-        #all_acc.append(round(max(history['val_acc']).item(), ndigits=2))
         all_acc.append(round(accuracy_score(labels, preds.cpu().numpy())* 100, ndigits=2))
         all_f1.append(round(f1_score(labels, preds.cpu().numpy(), average='weighted') * 100, ndigits=2)) 
         all_prec.append(round(precision_score(labels, preds.cpu().numpy(), average='weighted'), ndigits=2) * 100)
@@ -192,8 +173,7 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=7777)
     parser.add_argument('--device', type=str, default='cuda:0', choices=['cuda:0', 'cpu'])
     parser.add_argument('--graph_type', type=str, default='g1', choices=['g1', 'g2'])
-    parser.add_argument('--ex_id', type=str, default='all', choices=['ex1', 'ex2', 'ex3', 'all', 'Get', 'Cut'])
-    # parser.add_argument('--window_size', type=int, default=600)
+    parser.add_argument('--ex_id', type=str, default='all', choices=['all', 'Get', 'Cut'])
     parser.add_argument('--window_size', type=int, default=600)
     parser.add_argument('--overlap', type=int, default=0)
 
@@ -201,7 +181,7 @@ if __name__ == '__main__':
     parser.add_argument('--model_name', type=str, default='gnn_transformer', choices=['gnn', 'gnn_transformer'])
     parser.add_argument('--operator', type=str, default='gcn', choices=['gcn', 'cheb', 'graphconv', 'gat', 'transformer'])
     parser.add_argument('--batch_size', type=int, default=128)
-    parser.add_argument('--num_epochs', type=int, default=50) # default was 1
+    parser.add_argument('--num_epochs', type=int, default=50) 
     parser.add_argument('--class_weight', default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument('--lr', type=float, default=0.01)
     parser.add_argument('--apply_scheduler', default=False, action=argparse.BooleanOptionalAction)
@@ -210,7 +190,6 @@ if __name__ == '__main__':
     parser.add_argument('--kernel_size', type=int, default=3)
     parser.add_argument('--dilation', type=int, default=1)
     parser.add_argument('--hidden_dim', type=int, default=100)
-    # parser.add_argument('--num_layers', type=int, default=2)
     parser.add_argument('--num_layers', type=int, default=2)
     parser.add_argument('--num_layers_trans', type=int, default=2)
     parser.add_argument('--bidirectional', default=False, action=argparse.BooleanOptionalAction)
